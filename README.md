@@ -13,7 +13,7 @@ This is the Flipstarter campaign page for integrating Bitcoin Cash (BCH) into Gr
 ## 🎯 What We're Building
 
 ### Phase 1: Twitter API Setup (4.5 BCH)
-- Twitter API Premium access: $100/month × 20 months = $2,000
+- Twitter API Premium access: $200/month × 10 months = $2,000
 - @GrokMarketsBCH bot operational costs
 - Separate bot instance for BCH community
 - API rate limit management
