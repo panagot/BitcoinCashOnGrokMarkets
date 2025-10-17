@@ -2,7 +2,7 @@
 
 ## 🚀 Project Overview
 
-This is the Flipstarter campaign page for integrating Bitcoin Cash (BCH) into GrokMarkets - the first Twitter-native prediction market platform.
+This is the Flipstarter campaign page for integrating Bitcoin Cash (BCH) into GrokMarkets - launching soon as the first Twitter-native prediction market platform.
 
 ### Campaign Details
 - **Goal:** 9 BCH (~$4,140 at current prices)
@@ -12,17 +12,18 @@ This is the Flipstarter campaign page for integrating Bitcoin Cash (BCH) into Gr
 
 ## 🎯 What We're Building
 
-### Phase 1: BCH Wallet Integration (4.5 BCH)
+### Phase 1: Twitter API Setup (4.5 BCH)
+- Twitter API Premium access: $100/month × 20 months = $2,000
+- @GrokMarketsBCH bot operational costs
+- Separate bot instance for BCH community
+- API rate limit management
+
+### Phase 2: BCH Integration & Launch (4.5 BCH)
 - HD wallet system for Bitcoin Cash
-- Deposit/withdrawal APIs
+- BCH deposit/withdrawal APIs
 - Real-time transaction monitoring
 - Database schema updates for multi-currency support
-
-### Phase 2: Twitter Bot & Launch (4.5 BCH)
-- @GrokMarketsBCH dedicated Twitter bot
-- BCH-specific betting commands
-- Community outreach and marketing
-- Production deployment and testing
+- Separate @GrokMarketsBCH bot development
 
 ## 💡 Why Bitcoin Cash?
 
