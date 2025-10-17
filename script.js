@@ -1,7 +1,7 @@
 // GrokMarkets Bitcoin Cash Flipstarter Campaign Script
 
 // BCH Address (replace with actual address)
-const BCH_ADDRESS = 'bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a';
+const BCH_ADDRESS = 'bitcoincash:qpn23g0mmsc7c5fl6lvcu4nu4nxz34xkqvm987dpxd';
 
 // Campaign data
 const CAMPAIGN_DATA = {
