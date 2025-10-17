@@ -3,6 +3,9 @@
 // BCH Address (replace with actual address)
 const BCH_ADDRESS = 'bitcoincash:qpn23g0mmsc7c5fl6lvcu4nu4nxz34xkqvm987dpxd';
 
+// API base URL
+const API_BASE = 'https://grokmarkets.com/api';
+
 // Campaign data
 const CAMPAIGN_DATA = {
     goal: 9,
@@ -178,30 +181,61 @@ function closeInstructions() {
     if (overlay) overlay.remove();
 }
 
-// Update campaign progress
-function updateProgress() {
-    // In a real implementation, this would fetch from blockchain
-    // For now, we'll simulate progress
-    const progress = (CAMPAIGN_DATA.raised / CAMPAIGN_DATA.goal) * 100;
-    
-    const progressFill = document.querySelector('.progress-fill');
-    const raisedAmount = document.querySelector('.raised');
-    const contributorsCount = document.querySelector('.contributors span');
-    
-    if (progressFill) {
-        progressFill.style.width = `${Math.min(progress, 100)}%`;
+// Update campaign progress from API
+async function updateProgress() {
+    try {
+        const response = await fetch(`${API_BASE}/bch-campaign/progress`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const campaign = data.data;
+            
+            // Update CAMPAIGN_DATA with real data
+            CAMPAIGN_DATA.raised = campaign.progress.raised_bch;
+            CAMPAIGN_DATA.contributors = campaign.progress.contributor_count;
+            
+            // Update progress bar
+            const progress = (CAMPAIGN_DATA.raised / CAMPAIGN_DATA.goal) * 100;
+            const progressFill = document.querySelector('.progress-fill');
+            const raisedAmount = document.querySelector('.raised');
+            const contributorsCount = document.querySelector('.contributors span');
+            
+            if (progressFill) {
+                progressFill.style.width = `${Math.min(progress, 100)}%`;
+            }
+            
+            if (raisedAmount) {
+                raisedAmount.textContent = `${CAMPAIGN_DATA.raised.toFixed(2)} BCH raised`;
+            }
+            
+            if (contributorsCount) {
+                contributorsCount.textContent = `${CAMPAIGN_DATA.contributors} contributors`;
+            }
+            
+            // Update campaign status
+            updateCampaignStatus();
+            
+            // Update time remaining
+            updateTimeRemaining(campaign.timeRemaining);
+            
+            // Show success/failure messages
+            if (campaign.isSuccessful) {
+                showNotification('🎉 Campaign goal reached! Thank you for your support!', 'success');
+            } else if (campaign.needsRefunds) {
+                showNotification('⏰ Campaign ended. Refunds will be processed automatically.', 'info');
+            }
+            
+            console.log('✅ Campaign progress updated from API');
+        } else {
+            console.error('❌ Failed to fetch campaign progress:', data.error);
+            // Fallback to cached data
+            loadCampaignProgress();
+        }
+    } catch (error) {
+        console.error('❌ Error fetching campaign progress:', error);
+        // Fallback to cached data
+        loadCampaignProgress();
     }
-    
-    if (raisedAmount) {
-        raisedAmount.textContent = `${CAMPAIGN_DATA.raised} BCH raised`;
-    }
-    
-    if (contributorsCount) {
-        contributorsCount.textContent = `${CAMPAIGN_DATA.contributors} contributors`;
-    }
-    
-    // Update campaign status
-    updateCampaignStatus();
 }
 
 // Update campaign status
@@ -250,6 +284,38 @@ function updateCountdown() {
     
     const countdownElement = document.querySelector('.countdown');
     if (countdownElement) {
+        countdownElement.innerHTML = `
+            <div class="time-unit">
+                <span class="time-value">${days}</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value">${hours}</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value">${minutes}</span>
+                <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value">${seconds}</span>
+                <span class="time-label">Seconds</span>
+            </div>
+        `;
+    }
+}
+
+// Update time remaining from API data
+function updateTimeRemaining(timeData) {
+    if (!timeData) return;
+    
+    const countdownElement = document.querySelector('.countdown');
+    if (countdownElement && !timeData.isExpired) {
+        const days = timeData.days;
+        const hours = 0; // We'll calculate this from the remaining time
+        const minutes = 0;
+        const seconds = 0;
+        
         countdownElement.innerHTML = `
             <div class="time-unit">
                 <span class="time-value">${days}</span>
